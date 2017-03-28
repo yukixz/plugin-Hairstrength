@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import fs from 'fs-extra'
 import { join } from 'path-extra'
 import CSON from 'cson'
@@ -47,10 +48,12 @@ export function estimateSenka(exp, baseExp) {
   return (exp - baseExp) / 1428 - 0.0499
 }
 
+const MAGIC_R = [ 8931, 1201, 1156, 5061, 4569, 4732, 3779, 4568, 5695, 4619, 4912, 5669, 6586 ]
+const MAGIC_Il = [4999, 2257, 7351, 2039, 6604, 4132653, 1033183, 2570, 4979, 6314, 13, 5478, 3791, 10, 9640, 6707, 1000, 1875979]
+const MAGIC_13 = '3.605551275463989'
+const MAGIC_L = _.range(10).map(i => Number(MAGIC_Il[MAGIC_13.indexOf(i)].toString().slice(0, 2)))
 export function getRate(rankNo, obfsRate, memberId) {
-  const MAGIC_R_NUMS = [ 8931, 1201, 1156, 5061, 4569, 4732, 3779, 4568, 5695, 4619, 4912, 5669, 6586 ]
-  const MAGIC_L_NUMS = [ 63, 30, 70, 83, 95, 52, 45, 88, 92, 83 ]
-  const rate = obfsRate / MAGIC_R_NUMS[rankNo % 13] / MAGIC_L_NUMS[memberId % 10] - 73 - 18
+  const rate = obfsRate / MAGIC_R[rankNo % 13] / MAGIC_L[memberId % 10] - 73 - 18
   return rate > 0 ? rate : 0
 }
 
